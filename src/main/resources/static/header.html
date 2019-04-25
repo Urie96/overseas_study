@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
+    <title>院校</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="static/js/1.js"></script>
+    <style type="text/css">
+      .navbar-nav > li > a{
+          padding-top:4px ; 
+          padding-bottom:0 ;
+          height: 28px;
+      }
+      .navbar {min-height:20px ;}
+    </style>
+  </head>
+<body>
+    <nav class='navbar navbar-default' role='navigation' id='notloggedin'>
+      <div class='container-fluid'>
+        <ul class='nav navbar-nav navbar-right'>
+          <li><a href='login.html'><span class='glyphicon glyphicon-log-in'></span> 登录</a></li>
+          <li><a href='signUp.html'><span class='glyphicon glyphicon-user'></span> 注册</a></li>
+        </ul>
+      </div>
+    </nav>
+    <nav class='navbar navbar-default' role='navigation' id='loggedin'>
+      <div class='container-fluid'>
+        <ul class='nav navbar-nav navbar-right'>
+          <li><a href='userCenter.html'>欢迎您,<span class='username'>********</span></a></li>
+          <li><a href='javascript' onclick='logout()'><span class='glyphicon glyphicon-off'></span>退出</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class='container' >
+      <div class='col-sm-3'>
+        <img src='imgs/logo.png' alt='LOGO' width='260' style="margin-top: 20px;opacity: 0.7">
+      </div>
+      <div class='col-sm-5 col-sm-offset-1' style='padding-top: 50px;padding-bottom: 70px'>
+        <div class='input-group'>
+          <span class='input-group-addon'><span class='glyphicon glyphicon-search'></span></span>
+          <input type='text' class='form-control' id='searchInput' placeholder='新西兰本科'>
+          <div class='input-group-btn'>
+            <button type='button' class='btn btn-default' tabindex='-1' id='searchBtn' searchWhat='schools' onclick='search()'>搜院校
+            </button>
+            <button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown' tabindex='-1'>
+              <span class='caret'></span>
+              <span class='sr-only'>切换下拉菜单</span>
+            </button>
+            <ul class='dropdown-menu pull-right'>
+              <li><a href='javascript:void(0);' onclick='shiftSearch()' id='shiftSearch'>搜问答</a></li>
+            </ul>
+          </div><!-- /btn-group -->
+        </div>
+      </div>
+      <div class='col-sm-2 col-sm-offset-1'>
+        <img src='http://img.lcwcdn.com/u/51images/lcwtel.png' alt='电话咨询' width='240' style="margin-top: 40px;opacity: 0.8">
+      </div>
+    </div>
+    <div style='background-color:#dddddd'>
+      <div class='container'>
+        <div class='row'>
+          <div class='col-sm-6'>
+            <ul class='nav nav-pills nav-justified'>
+              <li id='nav_index'><a href='index.html' style="font-weight: bold;font-size:  16px">主页</a></li>
+              <li id='nav_school' class="active"><a href='schools.html' style="font-weight: bold;font-size:  16px">院校</a></li>
+              <li id='nav_assess'><a href='assessNew.html' style="font-weight: bold;font-size: 16px">评估</a></li>
+              <li id='nav_qa'><a href='#' style="font-weight: bold;font-size: 16px">问答</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+        $('#loggedin').hide();
+        $.ajax({
+          type: 'get',
+          url: 'uname.json',
+          async: true,
+          success: function(result){
+              if (result.code==100){ 
+                $('#notloggedin').hide();
+                $('#loggedin').show();
+                $('.username').text(result.extend.name);
+              }
+          }
+        });
+    </script>
+</body>
+</html>
+
+

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
+    <title>登录</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="static/js/1.js"></script>
+    <link rel="stylesheet" href="static/css/mystyle.css">
+  </head>
+  <body style="background:rgba(255,255,255,0.1) url(imgs/login2.jpg) no-repeat left top;background-size:100%">
+    <div style="background-color: rgba(255,255,255,0.5);height: 750px">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-offset-3 col-sm-6" style="background-color: #ffffff;opacity: 0.9;margin-top: 160px;padding:0 60px 40px 60px">
+            <form role="form">
+              <div class="page-header">
+                  <h2 class="text-center">欢迎登录</h2>
+              </div>
+              <div class="form-group">
+                <div class="input-group input-group-lg">
+                  <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                  <input type="text" class="form-control" id="account" autocomplete="off" autofocus placeholder="请输入账号" onblur="validateAccount()">
+                  <span class="input-group-addon" id="icon1">
+                    
+                  </span>
+                </div><br>
+              </div>
+              <div class="form-group" style="margin-bottom: 0">
+                <div class="input-group input-group-lg">
+                  <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                  <input type="password" class="form-control" id="password" autocomplete="off" placeholder="请输入密码">
+                  <span class="input-group-addon" id="icon2">
+                    <span class="glyphicon glyphicon-remove"></span>
+                  </span>
+                </div><br>
+              </div>
+              <div class="form-group">
+              	<div class="col-sm-offset-2 col-sm-5">
+              		<label class="checkbox-inline">
+	                	<input type="checkbox" id="remember-me" name='remember-me' checked>记住本机
+	              	</label>
+              	</div>
+              	<div class="col-sm-4">
+              		<a href="javascript:void(0)" onclick="window.open('forgetPasswd.html')">忘记密码?</a>
+              	</div>
+              </div>
+              <br>
+              <div class="form-group">
+                  <button type="button" class="btn btn-info btn-block disabled" id="loginBtn" onclick="login()" style="height: 40px">立 即 登 录</button>
+              </div>
+              <div class="text-center"><a href="signUp.html">没有账号?立即注册</a></div>
+            </form>
+          </div>
+        </div>
+    </div>
+    </div>
+    
+    <script>
+      $("#icon1").hide();
+      $("#icon2").hide();
+      function validateAccount(){
+        $("#icon1").hide();
+        $("#icon2").hide();
+        var account = $('#account').val();
+        if(account!=null&&account!=""&&account!=undefined){
+          if (isAccount(account)) {
+            $("#icon1").html("<span class='glyphicon glyphicon-ok'></span>").show();
+            $("#loginBtn").removeClass("disabled");
+          } 
+          else{
+            $("#icon1").html("<span class='glyphicon glyphicon-remove'></span>").show();
+            $("#loginBtn").addClass("disabled");
+          }
+        }
+        else{
+          $("#icon1").html("").hide();
+        }
+      }
+      function login(){
+        var account=$("#account").val();
+        var password=$("#password").val();
+        if(password.length<6){
+          $("#icon2").show();
+        }
+        else{
+           $("#icon2").hide();
+           if (isAccount(account)) {
+             $("#icon1").html("<span class='glyphicon glyphicon-ok'></span>").show();
+            var data={
+              "username":account,
+              "password":password
+            };
+            if($("#remember-me").prop("checked")){
+              data={
+                "username":account,
+                "password":password,
+                "remember-me":1
+              };
+             }
+             // 这里ajax向后端发送账号密码判断是否正
+            $.ajax({
+              type: "post",
+              url: "/login",
+              data: data,
+              dataType: "json",
+              success: function(result){
+                if (result.code==100){
+                  var href=getQueryString("href");
+                  if(!isEmpty(href)){
+                    window.location.href=href;
+                  }
+                  window.location.href="userCenter.html";
+                }else {
+                  $("#icon2").show();
+                }
+            }
+            });
+            
+          } 
+        }
+      }
+    </script>
+  </body>
+
+</html>

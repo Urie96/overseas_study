@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
+    <title>评估</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="static/js/1.js"></script>
+    <link rel="stylesheet" href="static/css/mystyle.css">
+  </head>
+  <body>
+    <script src="static/js/header.js"></script>
+    
+    <div style="background:rgba(130,130,130,0.9) url(imgs/assess_background.jpg) no-repeat left top;background-size:100%">
+      <div class="container" style="background-color: rgba(110,110,110,0.7);color: #ffffff">
+        <!-- <img src="http://img.lcwcdn.com/u/51images/smoll2017.jpg" alt="" class="img-responsive" width="1300"> -->
+        <br>
+        <h4>为了能给您提供更精确的留学服务，请您仔细填写以下相关信息。</h4>
+        <hr>
+        <br>
+        <form class="form-horizontal" role="form">
+          <div class="form-group">
+            <label for="assess_uname" class="col-sm-3 control-label">姓名:</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" id="assess_uname" onblur="validate_name()" placeholder="请输入您的姓名(必填)">
+            </div>
+            <div class="col-sm-4"><label class="control-label text-danger" id="tip_name"></label></div>
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="assess_uphone" class="col-sm-3 control-label" >手机:</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" id="assess_uphone"  onblur="validate_phone()" placeholder="请输入您的手机号(必填)">
+            </div>
+            <div class="col-sm-4"><label class="control-label text-danger" id="tip_phone"></label></div>
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="assess_uemail" class="col-sm-3 control-label">邮箱:</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" id="assess_uemail"  onblur="validate_email()" placeholder="请输入您的邮箱">
+            </div>
+            <div class="col-sm-4"><label class="control-label text-danger" id="tip_email"></label></div>
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="assess_uQQ" class="col-sm-3 control-label">QQ:</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" id="assess_uQQ"  onblur="validate_QQ()" placeholder="请输入您的QQ号">
+            </div>
+            <div class="col-sm-4"><label class="control-label text-danger" id="tip_QQ"></label></div>
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="assess_countries" class="col-sm-3 control-label">意向国家:</label>
+            <div class="col-sm-5">
+              <label class="checkbox-inline">
+                <input type="checkbox" name="assess_countries" value="英国">英国
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="assess_countries" value="美国">美国
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="assess_countries" value="澳大利亚">澳大利亚
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="assess_countries" value="新西兰">新西兰
+              </label>
+              <div class="checkbox">
+                <label class="checkbox-inline">
+                  <input type="checkbox" name="assess_countries" value="加拿大">加拿大
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" name="assess_countries" value="香港">香港
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" name="assess_countries" value="新加坡">新加坡
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" name="assess_countries" value="其他">其他
+                </label>
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="assess_target_education" class="col-sm-3 control-label">目标学历:</label>
+            <div class="col-sm-8">
+              <label class="radio-inline">
+                <input type="radio" name="assess_target_education" value="读高中">读高中
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_target_education" value="读本科">读本科
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_target_education" value="读本科预科">读本科预科
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_target_education" value="读硕士">读硕士
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_target_education" value="读硕士预科读">读硕士预科
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_target_education" value="读博士">读博士
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_target_education" value="其他">其他
+              </label>
+            </div>
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="assess_target_major" class="col-sm-3 control-label">目标专业:</label>
+            <div class="col-sm-5">
+              <select class="form-control" id="assess_target_major">
+                <option value="">请选择目标专业</option>
+                <option value="商科专业">商科专业</option>
+                <option value="工科专业">工科专业</option>
+                <option value="文科专业">文科专业</option>
+                <option value="艺术专业">艺术专业</option>
+                <option value="理科专业">理科专业</option>
+                <option value="社会科学专业">社会科学专业</option>
+                <option value="生物科学专业">生物科学专业</option>
+                <option value="医学专业">医学专业</option>
+                <option value="金融专业">金融专业</option>
+                <option value="其他">其他</option>
+              </select>
+            </div>
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="assess_study_date" class="col-sm-3 control-label">留学时间:</label>
+            <div class="col-sm-8">
+              <label class="radio-inline">
+                <input type="radio" name="assess_study_date" value="2019上半年">2019上半年
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_study_date" value="2019下半年">2019下半年
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_study_date" value="2020上半年">2020上半年
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_study_date" value="2020下半年">2020下半年
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_study_date" value="其他">其他
+              </label>
+            </div>
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="assess_budget" class="col-sm-3 control-label">留学预算:</label>
+            <div class="col-sm-8">
+              <label class="radio-inline">
+                <input type="radio" name="assess_budget" value="10万">10万
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_budget" value="20万">20万
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_budget" value="30万">30万
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_budget" value="40万">40万
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_budget" value="50万">50万
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_budget" value="其他">其他
+              </label>
+            </div>
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="assess_work_experience" class="col-sm-3 control-label">工作经验:</label>
+            <div class="col-sm-8">
+              <label class="radio-inline">
+                <input type="radio" name="assess_work_experience" value="">无
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_work_experience" value="不足一年">不足一年
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_work_experience" value="1年~2年">1年~2年
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_work_experience" value="2年~3年">2年~3年
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_work_experience" value="3年~4年">3年~4年
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_work_experience" value="4年以上">4年以上
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_work_experience" value="其他">其他
+              </label>
+            </div>
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="assess_current_education" class="col-sm-3 control-label">当前学历:</label>
+            <div class="col-sm-5">
+              <select class="form-control" id="assess_current_education">
+                <option value="">请选择当前学历</option>
+                <option value="硕士毕业">硕士毕业</option>
+                <option value="硕士在读">硕士在读</option>
+                <option value="本科毕业">本科毕业</option>
+                <option value="本科大四">本科大四</option>
+                <option value="本科大三">本科大三</option>
+                <option value="本科大二">本科大二</option>
+                <option value="本科大一">本科大一</option>
+                <option value="大专毕业三年及以上">大专毕业三年及以上</option>
+                <option value="大专毕业三年以下">大专毕业三年以下</option>
+                <option value="大专大三">大专大三</option>
+                <option value="大专大二">大专大二</option>
+                <option value="大专大一">大专大一</option>
+                <option value="高三毕业">高三毕业</option>
+                <option value="高三">高三</option>
+                <option value="高二">高二</option>
+                <option value="高一">高一</option>
+                <option value="初三">初三</option>
+                <option value="初二">初二</option>
+                <option value="初一">初一</option>
+              </select>
+            </div>
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="assess_current_school_type" class="col-sm-3 control-label">学校类型(毕业/在读):</label>
+            <div class="col-sm-8">
+              <label class="radio-inline">
+                <input type="radio" name="assess_current_school_type" value="普通中学">普通中学
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_current_school_type" value="重点高中">重点高中
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_current_school_type" value="本科">本科
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_current_school_type" value="211院校">211院校
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_current_school_type" value="985院校">985院校
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="assess_current_school_type" value="其他">其他
+              </label>
+            </div>
+          </div>
+          <div class="col-sm-offset-2">
+            <br>
+            <strong>友情提示：</strong><em>我们有义务对您的个人资料保密，不会向任何第三方透露客户的相关信息。</em>
+            <br>
+            <br>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-3">
+              <button type="button" class="btn btn-info btn-block" id="assess_submit_btn" onclick="assess_submit()">提交</button>
+            </div>
+          </div>
+          <br>
+          <br>
+          <br>
+        </form>
+      </div>
+    </div>
+    <script src="static/js/footer.js"></script>
+    <script>
+      $(function(){
+        $("#nav_assess").addClass("active");
+      });
+
+      function validate_name(){
+        $("#tip_name").empty();
+        var name=$("#assess_uname").val();
+        if(isEmpty(name)){
+          $("#tip_name").text("请输入姓名");
+          return false;
+        }
+        else if(!isChineseName(name)){
+          $("#tip_name").text("请输入您的真实姓名");
+          return false;
+        }
+        return true;
+      }
+      function validate_phone(){
+        $("#tip_phone").empty();
+        var uphone=$("#assess_uphone").val();
+        if(isEmpty(uphone)){
+          $("#tip_phone").text("请输入手机号");
+          return false;
+        }
+        else if(!isPhoneFormat(uphone)){
+          $("#tip_phone").text("手机号格式不正确");
+          return false;
+        }
+        return true;
+      }
+      function validate_email(){
+        $("#tip_email").empty();
+        var uemail=$("#assess_uemail").val();
+        if(!isEmpty(uemail)&&!isEmailFormat(uemail)){
+          $("#tip_email").text("邮箱格式不正确");
+          return false;
+        }
+        return true;
+      }
+      function validate_QQ(){
+        $("#tip_QQ").empty();
+        var uQQ=$("#assess_uQQ").val();
+        if(!isEmpty(uQQ)&&!isQQFormat(uQQ)){
+          $("#tip_QQ").text("QQ号格式不正确");
+          return false;
+        }
+        return true;
+      }
+      function assess_submit(){
+        if(validate_name()&&validate_phone()&&validate_email()&&validate_QQ()){
+          var uname=$("#assess_uname").val();
+          var uphone=$("#assess_uphone").val();
+          var uemail=$("#assess_uemail").val();
+          var uQQ=$("#assess_uQQ").val();
+          var countries=[];
+          $("input[name='assess_countries']:checked").each(function(i){//把所有被选中的复选框的值存入数组
+            countries[i] =$(this).val();
+          }); 
+          var target_education=$("input[name='assess_current_education']:checked").val();//目标学历
+          var target_major=$("#assess_target_major").val();//目标专业,默认为空字符串
+          var study_date=$("input[name='assess_study_date']:checked").val();//留学时间
+          var budget=$("input[name='assess_budget']:checked").val();
+          var work_experience=$("input[name='assess_work_experience']:checked").val();
+          var current_education=$("#assess_current_education").val();
+          var current_school_type=$("input[name='assess_current_school_type']:checked").val();
+
+          $.ajax({
+            type:"post",
+            url:"assess_submit",
+            data:{
+              "uname":uname,
+              "uphone":uphone,
+              "uemail":uemail,
+              "uQQ":uQQ,
+              "countries":countries,  //这是一个字符串数组
+              "target_education":target_education,//目标学历
+              "target_major":target_major,//目标专业,默认为空字符串
+              "study_date":study_date,//留学时间,默认空
+              "budget":budget,//预算,默认空
+              "work_experience":work_experience,//工作经验,默认空
+              "current_education":current_education,//当前学历,默认空
+              "current_school_type":current_school_type,//毕业学校类型,默认空
+            },
+            traditional: true,  //用于发送数组
+            dataType:"json",
+            success:function(result){
+              if(result.code==100){//保存成功
+                alert("提交成功,不久将有专家联系您,请保持电话畅通!");
+                location.href="userCenter.html";
+              }
+              else{
+                alert("提交失败,请稍后再试!");
+              }
+            }
+          });
+        }
+      }
+    </script>
+
+  </body>
+  </html>

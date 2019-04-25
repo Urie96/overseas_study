@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
+    <title>院校</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="static/js/1.js"></script>
+    <link rel="stylesheet" href="static/css/mystyle.css">
+  </head>
+  <body>
+    <script src="static/js/header.js"></script>
+    <div style="background:#fff url(imgs/login.jpg) no-repeat left top;background-size:100%;height: 450px;padding-top: 70px">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-offset-6 col-sm-4" style="background-color: #ffffff;opacity: 0.9;padding: 25px;padding-bottom: 15px">
+            <form role="form">
+              <div class="form-group">
+                <select class="form-control" id="countries">
+                  <option>国家</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <select class="form-control" id="type">
+                  <option>学校性质</option>
+                  <option>公立</option>
+                  <option>私立</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <select class="form-control" id="majors">
+                  <option>专业方向</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" id="schoolname" placeholder="请输入院校中文名/英文名">
+              </div>
+              <div class="form-group">
+                <button type="button" class="btn btn-info btn-block" onclick="filter()">搜索</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="page-header">
+        <h2>热门院校
+          <small>Hot Universities And Colleges</small>
+          <button type="button" class="btn btn-default pull-right" onclick="location.href='searchSchoolResult.html'">更多&gt&gt</button>
+        </h1>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <a href="#" class="thumbnail" id="country1">
+            <img src="imgs/school1.jpg">
+            <div class="caption">
+                <h4 class="text-center text-muted name" style="margin-top: 5px"></h4>
+            </div>
+          </a>
+        </div>
+        <div class="col-sm-4">
+          <a href="#" class="thumbnail" id="country2">
+            <img src="imgs/school2.jpg">
+            <div class="caption">
+                <h4 class="text-center text-muted name" style="margin-top: 5px"></h4>
+            </div>
+          </a>
+        </div>
+        <div class="col-sm-4">
+          <a href="#" class="thumbnail" id="country3">
+            <img src="imgs/school3.jpg">
+            <div class="caption">
+                <h4 class="text-center text-muted name" style="margin-top: 5px"></h4>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <a href="#" class="thumbnail" id="country4">
+            <img src="imgs/school4.jpg">
+            <div class="caption">
+                <h4 class="text-center text-muted name" style="margin-top: 5px"></h4>
+            </div>
+          </a>
+        </div>
+        <div class="col-sm-4">
+          <a href="#" class="thumbnail" id="country5">
+            <img src="imgs/school5.jpg">
+            <div class="caption">
+                <h4 class="text-center text-muted name" style="margin-top: 5px"></h4>
+            </div>
+          </a>
+        </div>
+        <div class="col-sm-4">
+          <a href="#" class="thumbnail" id="country6">
+            <img src="imgs/school6.jpg">
+            <div class="caption">
+                <h4 class="text-center text-muted name" style="margin-top: 5px"></h4>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  <script src="static/js/footer.js"></script>
+  <script>
+    $(document).ready(function(){
+        //获取筛选条件,返回json里面有个属性叫countries和majors
+        $.ajax({
+          type: "get",
+          url: "conditions",
+          async:true,
+          success: function(result){
+            $.each(result.extend.countries,function(key,value){
+              $("#countries").append("<option>"+value+"</option>");
+            });
+            // $.each(result.extend.majors,function(key,value){
+            //   $("#majors").append("<option>"+value+"</option>");
+            // });
+          }
+        });
+
+        //获取6个热门院校列表,数组元素是country对象(属性有name,area,type,major)
+        $.ajax({
+          type: "get",
+          url: "hotSchools",
+          async:true,
+          success: function(result){
+            $.each(result.extend.hotSchools,function(key,value){
+              var country=$("#country"+(key+1));
+              country.click(function(){
+                location.href='schoolDetail.html?name='+value.sname;
+              });
+              country.find(".name").text(value.sname);
+            });
+          }
+        });
+      });
+
+    function filter(){
+      var country=$("#countries").val();
+      var type=$("#type").val();
+      var major=$("#majors").val();
+      var name=$("#schoolname").val();
+      var url="searchSchoolResult.html?";
+      if(country!="国家"){
+        url+="&country="+country;
+      }
+      if(type!="学校性质"){
+        url+="&type="+type;
+      }
+      if(major!="专业方向"){
+        url+="&major="+major;
+      }
+      if(name!=""){
+        url+="&name="+name;
+      }
+      location.href=url;
+    }
+    $(function(){
+        $("#nav_school").addClass("active");
+      });
+  </script>
+  </body>
+
+</html>

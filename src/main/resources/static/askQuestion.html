@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
+    <title>提问</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="static/js/1.js"></script>
+    <link rel="stylesheet" href="static/css/mystyle.css">
+  </head>
+  <body>
+    <script src="static/js/header.js"></script>
+    <div class="container"  style="margin-top: 15px">
+      <div style="margin-bottom: 15px;font-size: 90%" class="location_tip">
+          <span class="glyphicon glyphicon-map-marker" style="color: #777777"></span>
+          <span style="color: #777777">您所在的位置：</span>
+          <a href="index.html">留学信息网</a>
+          &gt;
+          <a href="qa.html">留学问答</a>
+          &gt;
+          <span>提问</span>
+      </div>
+      <div style="background-color: rgb(246,246,246);padding:10px;color: rgb(100,100,100);margin-bottom: 15px">
+        <span class="glyphicon glyphicon-bookmark"></span>&nbsp;&nbsp;选择国家
+      </div>
+      <div id="qcountry">
+        <a href="javascript:void(0)" class="distance">不限</a>
+        <a href="javascript:void(0)" class="distance">美国</a>
+        <a href="javascript:void(0)" class="distance">英国</a>
+        <a href="javascript:void(0)" class="distance">加拿大</a>
+        <a href="javascript:void(0)" class="distance">澳大利亚</a>
+        <a href="javascript:void(0)" class="distance">德国</a>
+        <a href="javascript:void(0)" class="distance">法国</a>
+        <a href="javascript:void(0)" class="distance">新加坡</a>
+        <a href="javascript:void(0)" class="distance">新西兰</a>
+        <a href="javascript:void(0)" class="distance">意大利</a>
+        <a href="javascript:void(0)" class="distance">新西兰</a>
+        <a href="javascript:void(0)" class="distance">意大利</a>
+        <a href="javascript:void(0)" class="distance">日本</a>
+        <a href="javascript:void(0)" class="distance">瑞士</a>
+        <a href="javascript:void(0)" class="distance">瑞典</a>
+      </div>
+      <div style="background-color: rgb(246,246,246);padding:10px;color: rgb(100,100,100);margin:15px 0 15px 0">
+        <span class="glyphicon glyphicon-bookmark"></span>&nbsp;&nbsp;选择问题类型
+      </div>
+
+      <div id="qtype">
+        <a href="javascript:void(0)" class="distance">留学生活</a>
+        <a href="javascript:void(0)" class="distance">留学条件</a>
+        <a href="javascript:void(0)" class="distance">移民政策</a>
+        <a href="javascript:void(0)" class="distance">留学中介</a>
+        <a href="javascript:void(0)" class="distance">院校选择</a>
+        <a href="javascript:void(0)" class="distance">专业选择</a>
+        <a href="javascript:void(0)" class="distance">语言考试</a>
+        <a href="javascript:void(0)" class="distance">打工就业</a>
+        <a href="javascript:void(0)" class="distance">留学签证</a>
+        <a href="javascript:void(0)" class="distance">院校申请</a>
+      </div>
+      <div class="well well-sm" style="background-color: rgb(112,180,136);color: white;width: 15%;margin:20px 0 -1px 0">
+        <span class="glyphicon glyphicon-question-sign"></span>&nbsp;一句话描述您的疑问
+      </div>
+      <input type="text" class="form-control" id="input_q" placeholder="请在这里概述您的问题" style="margin:0 0 20px 0;height: 70px">
+      <p style="color: rgb(100,100,100)">&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span>&nbsp;补充问题（选填）</p>
+      <textarea class="form-control" id="text_q" cols="30" rows="10" placeholder="您可以在这里继续补充问题细节"></textarea>
+      <br>
+      <button type="button" class="btn btn-info btn-lg" onclick="click_submit_q()">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-pencil"></span>&nbsp;提交问题&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </button>
+    </div>
+    <script src="static/js/footer.js"></script>
+  </body>
+
+  <script>
+    $(function(){
+      //激活导航栏问答标签
+      $("#nav_qa").addClass("active");
+      //添加提问国家单击事件和提问类型单击事件
+      $("#qcountry a").click(function(){
+        $(this).addClass("select").siblings().removeClass("select");
+      });
+      $("#qtype a").click(function(){
+        $(this).addClass("select").siblings().removeClass("select");
+      });
+    });
+    //提交问题按钮
+    function click_submit_q(){
+      if($("#qtype a.select").length==0){
+        alert("请选择问题类型!");
+        return;
+      }
+      if(isEmpty($("#input_q").val())){
+        alert("请填写问题简介!");
+        return;
+      }
+      $.ajax({
+        type:"post",
+        url:"submit_question",
+        data:{
+          "qcountry":$("#qcountry a.select").text(),
+          "qtype":$("#qtype a.select").text(),
+          "qsummary":$("#input_q").val(),
+          "qdetail":$("#text_q").val()
+        },
+        dataType:"json",
+        success:function(result){
+          if(result.code==100){
+            alert("问题提交成功!");
+            location.href="userCenter.html"
+          }
+          else{
+            alert("问题提交失败!");
+          }
+        }
+      });
+    }
+  </script>
+</html>

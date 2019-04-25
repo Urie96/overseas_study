@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
+    <title>问答</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="static/js/1.js"></script>
+    <link rel="stylesheet" href="static/css/mystyle.css">
+    <style type="text/css">
+      a.distance{
+        padding:5px 15px 5px 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="static/js/header.js"></script>
+    <div class="container"  style="margin-top: 15px">
+      <div style="margin-bottom: 15px;font-size: 90%" class="location_tip">
+          <span class="glyphicon glyphicon-map-marker" style="color: #777777"></span>
+          <span style="color: #777777">您所在的位置：</span>
+          <a href="index.html">留学信息网</a>
+          &gt;
+          <span>留学问答</span>
+      </div>
+      <div class="well" id="wenda_label">
+        热门标签:
+        <a href="javascript:void(0)" class="distance select">全部</a>
+        <a href="javascript:void(0)" class="distance">留学生活</a>
+        <a href="javascript:void(0)" class="distance">留学条件</a>
+        <a href="javascript:void(0)" class="distance">移民政策</a>
+        <a href="javascript:void(0)" class="distance">留学中介</a>
+        <a href="javascript:void(0)" class="distance">院校选择</a>
+        <a href="javascript:void(0)" class="distance">专业选择</a>
+        <a href="javascript:void(0)" class="distance">语言考试</a>
+        <a href="javascript:void(0)" class="distance">打工就业</a>
+        <a href="javascript:void(0)" class="distance">留学签证</a>
+        <a href="javascript:void(0)" class="distance">院校申请</a>
+      </div>
+      <div style="float: right;margin-top: 10px">
+        <a href="askQuestion.html" style="color:rgb(37,105,45);font-weight: bold;">
+          <span class="glyphicon glyphicon-question-sign"></span>&nbsp;我要提问
+        </a>
+      </div>
+      <ul class="nav nav-tabs" id="new_hot" style="margin-bottom: 10px">
+        <li class="active" t="1"><a href="javascript:void(0)">推荐问答</a></li>
+        <li t="0"><a href="javascript:void(0)">最新问答</a></li>
+      </ul>
+      <div id="qa_list">
+        
+      </div>
+      <p id="page_info_area"></p>
+      <div id="page_nav_area">
+      </div>
+      <br>
+      <div class="row">
+          <div class="col-sm-4 col-sm-offset-4"> 
+            <button type="button" class="btn btn-info btn-lg btn-block" onclick="location.href='askQuestion.html'">
+              <span class="glyphicon glyphicon-question-sign"></span>&nbsp;我要提问
+            </button>
+          </div> 
+      </div>
+    </div>
+    <script src="static/js/footer.js"></script>
+  </body>
+
+  <script>
+    $(function(){
+      //导航栏问答标签激活
+      $("#nav_qa").addClass("active");
+      //搜索框默认为搜索问答
+      shiftSearch();
+      //处理url参数
+      $("#searchInput").val(getQueryString("key"));
+      //初始化页面
+      build_page(1);
+      //添加单击热门标签事件
+      $("#wenda_label a").click(function(){
+        $(this).addClass("select").siblings().removeClass("select");
+        build_page(1);
+      });
+      //添加单击最新问答和推荐问答按钮事件
+      $("#new_hot li").click(function(){
+        $(this).addClass("active").siblings().removeClass("active");
+        build_page(1);
+      });
+    });
+    function build_page_nav(result){
+      $("#page_nav_area").empty();
+      var nav=$("<nav></nav>").attr("style","text-align: center;");
+      var ul=$("<ul></ul>").addClass("pagination");
+      var firstPageLi=$("<li></li>").append($("<a></a>").append("首页").attr("href","#"));
+      var prePageLi=$("<li></li>").append($("<a></a>").append("&laquo;"));
+      if(result.extend.pageInfo.pageNum==1){//没有前一页，也就是当前页是第一页，首页按钮和上一页按钮失活
+        firstPageLi.addClass("disabled");
+        prePageLi.addClass("disabled");
+      }else{
+        //为首页和上一页添加点击翻页事件
+        firstPageLi.click(function(){
+          build_page(1);
+        })
+        prePageLi.click(function(){
+          build_page(result.extend.pageInfo.pageNum-1);
+        })
+      }
+      ul.append(firstPageLi).append(prePageLi);
+        
+      $.each(result.extend.pageInfo.navigatepageNums,function(index,item){
+        var numLi=$("<li></li>").append($("<a></a>").append(item));
+        if(result.extend.pageInfo.pageNum==item){
+          numLi.addClass("active");
+        }
+        numLi.click(function(){
+          build_page(item);
+        })
+        ul.append(numLi);
+      });
+      
+      //下一页
+      var nextPageLi=$("<li></li>").append($("<a></a>").append("&raquo;"));
+      //末页
+      var lastPageLi=$("<li></li>").append($("<a></a>").append("末页").attr("href","#"));
+      
+      if(result.extend.pageInfo.pageNum==result.extend.pageInfo.pages){//没有下一页，也就是当前页是最后一页，首页按钮和最后一页按钮失活
+        nextPageLi.addClass("disabled");
+        lastPageLi.addClass("disabled");
+      }else{
+        //为下一页和末页添加翻页事件
+        nextPageLi.click(function(){
+          build_page(result.extend.pageInfo.pageNum+1);
+        })
+        lastPageLi.click(function(){
+          build_page(result.extend.pageInfo.pages);
+        })
+      }
+      ul.append(nextPageLi).append(lastPageLi);
+      nav.append(ul);
+      $("#page_nav_area").append(nav);
+    }
+    function build_page_info(result){
+      $("#page_info_area").empty();
+      $("#page_info_area").append("当前第"+result.extend.pageInfo.pageNum
+          +"页，总"+result.extend.pageInfo.pages
+          +"页，共筛选到"+result.extend.pageInfo.total+"条问答");
+    }
+    function build_page(pageNo){
+      //点击某标签后,向后端发送该标签,后端调整问答后返回
+      var qtype=$("#wenda_label a.select").text();
+      if(qtype=="全部")
+        qtype="";
+      $.ajax({
+        type:"post",
+        url:"get_wenda",
+        data:{
+          "qsummary":$("#searchInput").val(),//搜索框里的关键字
+          "qtype":qtype,//热门标签
+          "new_hot":$("#new_hot li.active").attr("t"),//最新问答或者推荐问答
+          "pageNo":pageNo
+        },
+        dataType:"json",//返回一串问答qa_content,每个问答包含:谁提出的/提问时间/问题内容/答案内容
+        success:function(result){
+          $("#qa_list").empty();
+          build_page_nav(result);
+          build_page_info(result);
+          $.each(result.extend.qa_content,function(index,item){
+            var answer=item.answer.adetail;
+            if(answer.length>200){
+                   answer=answer.substring(0,200)+"...";//所以你返回的回答的字数最好多于200字才能看出效果
+                 }
+            var div1=$("<div></div>")
+              .attr("style","margin-bottom: 10px;font-size: 85%")
+              .append($("<span></span>").addClass("glyphicon glyphicon-edit"))
+              .append($("<span></span>").text(item.uname+"发表于："+timestampToTime(item.qdate)));
+            var div2=$("<div></div>")
+              .attr("style","background-color: rgb(163,252,194);width: 40%;padding-left: 5%")
+              .addClass("well well-sm")
+              .append(item.qsummary);
+            var div3=$("<div></div>")
+              .attr("style","color:rgb(243,111,34);font-size: 85%;margin-bottom: 10px")
+              .addClass("text-right")
+              .append($("<span></span>").addClass("glyphicon glyphicon-comment"))
+              .append("留学专家");
+            var a_more=$("<a></a>")
+              .attr("href","javascript:void(0)")
+              .addClass("click_more")
+              .append("展开&gt;&gt;")
+              .click(function(){
+                $(this).siblings(".answer").text(item.answer.adetail);
+                $(this).hide().siblings(".click_less").show();
+              });
+            var a_less=$("<a></a>")
+              .attr("href","javascript:void(0)")
+              .addClass("click_less")
+              .append("&lt;&lt;收起")
+              .click(function(){
+                $(this).siblings(".answer").text(answer);
+                $(this).hide().siblings(".click_more").show();
+              })
+              .hide();
+            var div4=$("<div></div>")
+              .attr("style","background-color: rgb(253,205,120);width: 80%;float: right;")
+              .addClass("well well-sm")
+              .append($("<span></span>").text(answer).addClass("answer"))
+              .append(a_more).append(a_less);
+            $("#qa_list").append(div1).append(div2).append(div3).append(div4).append("<hr style=\"clear: both\">");
+          });
+         
+        }
+      });
+    }
+  </script>
+</html>

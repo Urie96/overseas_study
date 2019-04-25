@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
+    <title>院校</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="static/js/1.js"></script>
+    <link rel="stylesheet" href="static/css/mystyle.css">
+  </head>
+  <body>
+    <script src="static/js/header.js"></script>
+    <div class="container"  style="margin-top: 15px">
+      <div style="margin-bottom: 15px;font-size: 90%" class="location_tip">
+          <span class="glyphicon glyphicon-map-marker" style="color: #777777"></span>
+          <span style="color: #777777">您所在的位置：</span>
+          <a href="index.html">留学信息网</a>
+          &gt;
+          <a href="schools.html">留学院校</a>
+          &gt;
+          <span>搜索结果</span>
+      </div>
+      <div class="panel panel-info">
+        <div class="panel-body" id="conditions">
+          <strong>筛选条件:</strong>
+          <br><br>
+          <p id="countries">国家：<a href="javascript:void(0)" onclick="clickCondition(this)" class="select">全部</a>&nbsp;</p>
+          <p id="type">
+            学校性质：
+            <a href="javascript:void(0)" onclick="clickCondition(this)" class="select">全部</a>&nbsp;
+            &nbsp;<a href="javascript:void(0)" onclick="clickCondition(this)">公立</a>&nbsp;
+            &nbsp;<a href="javascript:void(0)" onclick="clickCondition(this)">私立</a></p>
+          <p id="majors">专业方向：<a href="javascript:void(0)" onclick="clickCondition(this)" class="select">全部</a>&nbsp;</p>
+        </div>
+      </div>
+      <hr>
+      <div id="school_list">
+        <div class="media school">
+            <div class="media-left">
+              <img src="" class="media-object" style="width:150px">
+            </div>
+            <div class="media-body">
+              <h4 class="media-heading"><a href="javascript:void(0);" class="sname"></a></h4>
+              &nbsp;&nbsp;&nbsp;&nbsp;学校简介：<span class="sdescription"></span>
+            </div>
+            <hr>
+        </div>
+      </div>
+      
+      <p id="page_info_area">当前第 页，共 页，共 个学校</p>
+      <div id="page_nav_area">
+        <nav style="text-align: center;">
+          <ul class="pagination">
+            <li class="firstpage"><a href="javascript:void(0)">首页</a></li>
+            <li class="prevpage"><a href="javascript:void(0)">&laquo;</a></li>
+            <li class="active" ><a href="javascript:void(0)">1</a></li>
+            <li class="nextpage"><a href="javascript:void(0)">&raquo;</a></li>
+            <li class="lastpage"><a href="javascript:void(0)">末页</a></li>
+          </ul>
+        </nav>
+      </div>
+      
+    </div>
+    
+  <script src="static/js/footer.js"></script>
+  <script>
+    var totalRecord;//定义全局总记录数
+    var currentPage=1;//当前页数
+    var school=$("#school_list .school:first").clone();
+    $(document).ready(function(){
+        $("#nav_school").addClass("active");
+        fillFilterConditions();
+    });
+
+    $(document).ready(function(){
+        //打开学校细节网站
+        $(".sname").click(function(){
+          location.href="schoolDetail.html?name="+$(this).text();
+        });
+    });
+    //单击筛选条件
+    function clickCondition(e){
+      $(e).siblings("a").removeClass("select");
+      $(e).addClass("select");
+      fillSchoolsPage(1);
+    }
+
+    function build_page_nav(result){
+      //第一步：先清空之前的数据
+      $("#page_nav_area").empty();
+      //分页条
+      /*
+      <nav aria-label="Page navigation">
+        <ul class="pagination">
+        </ul>
+      </nav>
+      */
+      var nav=$("<nav></nav>").attr("style","text-align: center;");
+      var ul=$("<ul></ul>").addClass("pagination");
+      
+      //首页
+      var firstPageLi=$("<li></li>").append($("<a></a>").append("首页").attr("href","#"));
+      
+       //上一页
+      var prePageLi=$("<li></li>").append($("<a></a>").append("&laquo;"));
+      if(result.extend.pageInfo.pageNum==1){//没有前一页，也就是当前页是第一页，首页按钮和上一页按钮失活
+        firstPageLi.addClass("disabled");
+        prePageLi.addClass("disabled");
+      }else{
+        //为首页和上一页添加点击翻页事件
+        firstPageLi.click(function(){
+          fillSchoolsPage(1);
+        })
+        prePageLi.click(function(){
+          fillSchoolsPage(result.extend.pageInfo.pageNum-1);
+        })
+      }
+      
+      
+        ul.append(firstPageLi).append(prePageLi);
+        
+      $.each(result.extend.pageInfo.navigatepageNums,function(index,item){
+        var numLi=$("<li></li>").append($("<a></a>").append(item));
+        if(result.extend.pageInfo.pageNum==item){
+          numLi.addClass("active");
+        }
+        numLi.click(function(){
+          fillSchoolsPage(item);
+        })
+        ul.append(numLi);
+      });
+      
+      //下一页
+      var nextPageLi=$("<li></li>").append($("<a></a>").append("&raquo;"));
+      //末页
+      var lastPageLi=$("<li></li>").append($("<a></a>").append("末页").attr("href","#"));
+      
+      if(result.extend.pageInfo.pageNum==result.extend.pageInfo.pages){//没有下一页，也就是当前页是最后一页，首页按钮和最后一页按钮失活
+        nextPageLi.addClass("disabled");
+        lastPageLi.addClass("disabled");
+      }else{
+        //为下一页和末页添加翻页事件
+        nextPageLi.click(function(){
+          fillSchoolsPage(result.extend.pageInfo.pageNum+1);
+        })
+        lastPageLi.click(function(){
+          fillSchoolsPage(result.extend.pageInfo.pages);
+        })
+      }
+      ul.append(nextPageLi).append(lastPageLi);
+      nav.append(ul);
+      $("#page_nav_area").append(nav);
+      //nav.appendTo("#page_nav_area");
+    }
+    function fillFilterConditions(){
+
+      //获取筛选条件,返回json里面有属性叫countries和majors
+        $.ajax({
+          type: "get",
+          url: "conditions",
+          async:true,
+          success: function(result){
+            $.each(result.extend.countries,function(key,value){
+              $("#countries").append("&nbsp;<a href=\"javascript:void(0);\" onclick=\"clickCondition(this)\">"+value+"</a>&nbsp;");
+            });
+            handleUrlParam();
+          }
+        });
+    }
+    function handleUrlParam(){
+      var country=getQueryString("country");
+      var type=getQueryString("type");
+      var major=getQueryString("major");
+      var name=getQueryString("name");
+      $("#searchInput").val(name);
+      if(!isEmpty(country)){
+        $("#countries a").removeClass("select").each(function(){
+          if($(this).text()==country){
+            $(this).addClass("select");
+          }
+        });
+      }
+      if(!isEmpty(type)){
+        $("#type a").removeClass("select").each(function(){
+          if($(this).text()==type){
+            $(this).addClass("select");
+          }
+        });
+      }
+      if(!isEmpty(major)){
+        $("#majors a").removeClass("select").each(function(){
+          if($(this).text()==major){
+            $(this).addClass("select");
+          }
+        });
+      }
+      fillSchoolsPage(1);
+    }
+    function build_page_info(result){
+      $("#page_info_area").empty();
+      //查找到id="page_info_area"的div,并插入数据
+      $("#page_info_area").append("当前第"+result.extend.pageInfo.pageNum
+          +"页，总"+result.extend.pageInfo.pages
+          +"页，共找到"+result.extend.pageInfo.total+"个学校");
+      
+      //保存总记录数为全局变量
+      totalRecord=result.extend.pageInfo.total;
+      
+      //保存当前页为全局变量
+      currentPage=result.extend.pageInfo.pageNum;
+    }
+    function fillSchoolsPage(pn){
+      var country=$("#countries a.select").text();
+      var type=$("#type a.select").text();
+      var major=$("#majors a.select").text();
+      var name=$("#searchInput").val();
+
+      $.ajax({
+        type:"post",
+        url:"getOnePageSchools.json",
+        data:{
+          "scountry":country,
+          "snature":type,
+          "sspecialprofession":major,
+          "sname":name,
+          "pageNo":pn//你先筛选出符合条件的学校,然后给他们分页,这个pageNo就是让你返回那一页的学校数据,大概每页6-10个学校吧
+        },
+        dataType:"json",
+        //返回结果应包含:pageInfo.pageNum(当前页数),pageInfo.pages(总页数),pageInfo.total(总记录数),pageInfo.navigatepageNums(分页条的页码)
+        //schools(学校名sname,学校描述sdescription)
+        success:function(result){
+          build_page_info(result);
+          build_page_nav(result);
+          //.school后面加上:first
+          $("#school_list").empty();
+          $.each(result.extend.schools,function(index,item){
+            $("#school_list").append(school);
+            school=$("#school_list .school:first").clone();
+            $("#school_list .school:last").find("img").attr("src",item.img);
+            $("#school_list .school:last").find(".sname").text(item.sname).click(function(){
+              location.href="schoolDetail.html?name="+$(this).text();//添加单击学校跳转
+            });
+            var arr=item.detail.split("。");
+            $("#school_list .school:last").find(".sdescription").text(arr[0]+arr[1]+arr[2]);
+          })
+        }
+      });
+      $(function(){
+        $("#nav_school").addClass("active");
+      });
+    }
+  </script>
+  </body>
+
+</html>

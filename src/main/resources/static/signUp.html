@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
+  <title>注册</title>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="static/js/1.js"></script>
+</head>
+<body style="background-color: #eeeeee">
+  <div class="jumbotron" style="padding-top:10px;padding-bottom:30px;background-color:#ffffff">
+    <div>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-2"><img src="imgs/logo.png" alt="logo" width=100% onclick="toIndexPage()" style="cursor:pointer"></div>
+          <div class="col-sm-2"><h3>注册账号</h3></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+  <br>
+  <div class="container" style="background-color: #ffffff">
+    <br>
+    <br>
+    <div class="row">
+      <div class="col-sm-offset-4 col-sm-5">
+        <div class="page-header">
+          <h1>欢迎注册
+          <small>每一天，乐在沟通</small>
+          </h1>
+        </div>
+      </div>
+    </div>
+    <br>
+    <form class="form-horizontal" role="form">
+      <div class="form-group">
+        <label for="uname" class="col-sm-offset-2 col-sm-2 control-label">用户账号</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" id="uname" placeholder="请输入您的账号(必填)" autocomplete="off" maxlength="10" onblur="checkuname()">
+        </div>
+        <p class="text-danger" id="existuname">用户名已存在</p>
+      </div>
+
+      <div class="form-group">
+        <label for="upassword" class="col-sm-offset-2 col-sm-2 control-label">设置密码</label>
+        <div class="col-sm-5">
+          <input type="password" class="form-control" id="upassword" placeholder="请输入密码(必填)" autocomplete="off" maxlength="16" onblur="formatValidate()">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="upasswordConfirm" class="col-sm-offset-2 col-sm-2 control-label">确认密码</label>
+        <div class="col-sm-5">
+          <input type="password" class="form-control" id="upasswordConfirm" placeholder="请再次输入密码" autocomplete="off" onblur="formatValidate()">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="uemail" class="col-sm-offset-2 col-sm-2 control-label">邮箱</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" id="uemail" placeholder="请输入您的邮箱地址(必填)" onblur="checkemail()">
+        </div>
+        <p class="text-danger" id="existemail">该邮箱已被注册</p>
+      </div>
+
+      <div class="form-group">
+        <label for="unickname" class="col-sm-offset-2 col-sm-2 control-label">昵称</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" id="unickname" placeholder="给自己取一个昵称" autocomplete="off" maxlength="10" onblur="formatValidate()">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-offset-2 col-sm-2 control-label">性别</label>
+        <div class="col-sm-5">
+          <label class="radio-inline">
+            <input type="radio" name="ugender" value="0" checked>男
+          </label>
+          &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+          <label class="radio-inline">
+            <input type="radio" name="ugender"  value="1">女
+          </label>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="uphonenumber" class="col-sm-offset-2 col-sm-2 control-label">手机号码</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" id="uphonenumber" placeholder="请输入您的手机号码" maxlength="11" onblur="formatValidate()" >
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="uQQ" class="col-sm-offset-2 col-sm-2 control-label">QQ</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" id="uQQ" placeholder="请输入您的QQ号" maxlength="10" onblur="formatValidate()">
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="verifyCode" class="col-sm-offset-2 col-sm-2 control-label">验证码</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="verifyCode" placeholder="请输入图片验证码" oninput="formatValidate()">
+        </div>
+        <div class="col-sm-1">
+          <img src="checkCode" alt="" width="100" height="32" class="passcode" style="height:43px;cursor:pointer;" onclick="this.src=this.src+'?'">
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-sm-offset-4 col-sm-5">
+          <p class="text-danger" id="tip"></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-5">
+          <button type="button" class="btn btn-info btn-block disabled" onclick="ajax_submit()" id="signUpBtn">立即注册</button>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+        <div class="col-sm-offset-4 col-sm-5">
+          <div class="text-center">
+            <a href="login.html">已有账号?立即登录</a>
+          </div>
+        </div>
+    </div>
+    <br>
+    <br>
+  </div>
+  <br>
+  <br>
+  <br>
+  <script src="static/js/footer.js"></script>
+</body>
+  <script>
+    function checkemail(){
+      var uemail=$("#uemail").val();
+      if(isEmailFormat(uemail)){
+        $.ajax({
+          type:"post",
+          url:"checkemail",
+          data:{
+            "email":uemail,
+          },
+          dataType:"json",
+          success:function(result){ //100表示存在
+            if(result.code==100){
+              $("#existemail").show();
+              $("#signUpBtn").addClass("disabled");
+              return true;
+            }
+            else{
+              $("#existemail").hide();
+              return false;
+            }
+          }
+        })
+      }
+    }
+    function checkuname(){
+      var uname=$("#uname").val();
+      if(!isEmpty(uname)){
+        $.ajax({
+          type:"post",
+          url:"checkuname",
+          data:{
+            "uname":uname,
+          },
+          dataType:"json",
+          success:function(result){ //100表示存在
+            if(result.code==100){
+              $("#existuname").show();
+              $("#signUpBtn").addClass("disabled");
+              return true;
+            }
+            else{
+              $("#existuname").hide();
+              formatValidate();
+              return false;
+            }
+          }
+        })
+      }
+    }
+    function formatValidate(){
+      $("#signUpBtn").removeClass("disabled");
+      $("#tip").text("");
+      var uname=$("#uname").val();
+      if(isEmpty(uname)){
+         $("#tip").text("请输入账号");
+         $("#signUpBtn").addClass("disabled");
+         return;
+      }
+      else if(!isAccount(uname)){
+        $("#tip").text("账号必须是6-10位英文或数字的组合");
+         $("#signUpBtn").addClass("disabled");
+         return;
+      }
+
+      var upassword=$("#upassword").val();
+      if(isEmpty(upassword)){
+        $("#tip").text("请输入密码");
+        $("#signUpBtn").addClass("disabled");
+        return;
+      }
+      else if(upassword.length<6){
+         $("#tip").text("密码长度不足6位");
+         $("#signUpBtn").addClass("disabled");
+         return;
+      }
+
+      var upasswordConfirm=$("#upasswordConfirm").val();
+      if(isEmpty(upasswordConfirm)){
+        $("#tip").text("请确认密码");
+        $("#signUpBtn").addClass("disabled");
+        return;
+      }
+      else if(upassword!=upasswordConfirm){
+        $("#tip").text("两次输入密码不一致");
+        $("#signUpBtn").addClass("disabled");
+        return;
+      }
+
+      var uphonenumber=$("#uphonenumber").val();
+      if(isEmpty(uphonenumber)){
+         
+      }
+      else if(!isPhoneFormat(uphonenumber)){
+        $("#tip").text("手机格式错误");
+        $("#signUpBtn").addClass("disabled");
+        return;
+      }
+
+      var uemail=$("#uemail").val();
+      if(isEmpty(uemail)){
+         $("#tip").text("请输入邮箱地址");
+        $("#signUpBtn").addClass("disabled");
+        return;
+      }
+      else if(!isEmailFormat(uemail)){
+        $("#tip").text("邮箱格式错误");
+        $("#signUpBtn").addClass("disabled");
+        return;
+      }
+
+      var uQQ=$("#uQQ").val();
+      if(isEmpty(uQQ)){
+         
+      }
+      else if(!isQQFormat(uQQ)){
+        $("#tip").text("QQ号格式错误");
+        $("#signUpBtn").addClass("disabled");
+        return;
+      }
+      var code=$("#verifyCode").val();
+      if(isEmpty(code)){
+         $("#tip").text("请输入验证码");
+        $("#signUpBtn").addClass("disabled");
+      }
+      else if(code.length!=4){
+        $("#tip").text("请输入正确的验证码");
+        $("#signUpBtn").addClass("disabled");
+        return;
+      }
+    }
+    function ajax_submit() {
+      if(checkemail($("#uemail").val())||checkuname($("#uname").val())){
+        return;
+      }
+      var uname=$("#uname").val();
+      var upassword=$("#upassword").val();
+      var unickname=$("#unickname").val();
+      var ugender=$(":radio[name=ugender]:checked").val();    //性别:0是男,1是女
+      var uphonenumber=$("#uphonenumber").val();
+      var uemail=$("#uemail").val();
+      var uQQ=$("#uQQ").val();
+
+      $.ajax({
+          type: "post",  //数据提交方式（post/get）
+          url: "signup",  //提交到的url
+          data: {
+            "uname":uname,
+            "upassword":upassword,
+            "unickname":unickname,
+            "ugender":ugender,
+            "uphonenumber":uphonenumber,
+            "uemail":uemail,
+            "uQQ":uQQ,
+            "passcode":$("#verifyCode").val(),
+          },//提交的数据
+          dataType: "json",//返回的数据类型格式
+          success: function(result){
+            if(result.code==100){
+              window.location.href="userCenter.html";
+            }
+            else{
+            	if(result.extend.tip!=null){
+            		$("#tip").text(result.extend.tip);
+            	}
+            } 
+          }
+      });
+    }
+
+
+    $(document).ready(function(){
+      $("#existuname").hide();
+      $("#existemail").hide();
+    });
+    
+  </script>
+</html>

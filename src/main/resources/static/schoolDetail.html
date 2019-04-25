@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
+    <title>评估</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="static/js/1.js"></script>
+    <link rel="stylesheet" href="static/css/mystyle.css">
+  </head>
+  <body>
+    <script src="static/js/header.js"></script>
+    <div class="container"  >
+      <br>
+      <div style="margin-bottom: 15px;font-size: 90%" class="location_tip">
+          <span class="glyphicon glyphicon-map-marker" style="color: #777777"></span>
+          <span style="color: #777777">您所在的位置：</span>
+          <a href="index.html">留学信息网</a>
+          &gt;
+          <a href="javascript:void(0);" onclick="location.href='searchSchoolResult.html?country='+$(this).text()" class="scountry">国家名</a>
+          &gt;
+          <span class="sname"></span>
+
+      </div>
+    </div>
+    <div style="background:#fff url(http://img.lcwcdn.com/u/51images/xiangqingbg2.jpg) no-repeat left top;background-size:110%">
+      <div class="container" style="color: #ffffff">
+        <br>
+        <div class="row">
+          <div class="col-sm-3">
+            <img src="" class="img-rounded img-responsive" id="school_img">
+          </div>
+          <div class="col-sm-8 col-offset-sm-1">
+            <p class="sname" style="color:#436eee;font-size:30px"></p>
+            <div class="row">
+              <div class="col-sm-6">
+                <p>学校官网：<a href="javascript:void(0);" onclick="location.href='http://'+$(this).text()" class="swebsite"></a></p>
+                <p>学校性质: <span class="snature"></span></p>
+                <p>区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;域: <span class="sregion"></span></p>
+                <p>建校时间: <span class="sfoundingyear"></span></p>
+              </div>
+              <div class="col-sm-6">
+                <p>国&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;家: <span class="scountry"></span></p>
+                <p>城&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;市: <span class="scity"></span></p>
+                <p>在校学生: <span class="sstudentnum"></span>人</p>
+                <p>访问次数: <span class="shit"></span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+      </div>
+    </div>
+    <br>
+    <div class="container">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            学校详情
+          </h3>
+        </div>
+        <div class="panel-body" id="sdetail">
+        </div>
+      </div>
+    </div>
+
+    <script src="static/js/footer.js"></script>
+  </body>
+  <script>
+    $(function(){
+      $("#nav_school").addClass("active");
+
+      //处理url参数
+      var sname=getQueryString("name");
+        $(".sname").text(sname);
+    });
+    $(function(){
+        $.ajax({
+        type:"post",
+        url:"school_detail",
+        data:{
+          "sname":getQueryString("name"),
+        },
+        datatype:"json",
+        success:function(result){
+          var school=result.extend.school;  //只有一个school对象
+          $(".swebsite").text(school.swebsite);
+          $(".snature").text(school.snature);
+          $(".sregion").text(school.sregion);
+          $(".scountry").text(school.scountry);
+          $(".scity").text(school.scity);
+          $(".sstudentnum").text(school.sstudentnum);
+          $(".sfoundingyear").text(school.sfoundingyear);
+          $(".shit").text(school.hits);
+          $("#school_img").attr("src",school.img);
+          $("#sdetail").empty();
+          var detail=school.detail;
+          var arr=detail.split("。");
+           var i=0;
+           while(i<arr.length){
+            var p=$("<p></p>");
+              for(var j=0;j<3&&i<arr.length;j++){
+                p.append(arr[i++]+"。");
+              }
+              $("#sdetail").append(p);
+           }
+        }
+      });
+    });
+  </script>
+</html>

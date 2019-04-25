@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
+    <title>个人中心</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="static/js/1.js"></script>
+    <link rel="stylesheet" href="static/css/mystyle.css">
+    <style type="text/css">
+      body {
+          padding-right: 0px !important; 
+      }
+      *.modal-open {
+        padding-right: 0 !important;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="static/js/header.js"></script>
+    <br>
+    <div class="container">
+      <div style="margin-bottom: 15px;font-size: 90%" class="location_tip">
+          <span class="glyphicon glyphicon-map-marker" style="color: #777777"></span>
+          <span style="color: #777777">您所在的位置：</span>
+          <a href="index.html">留学信息网</a>
+          &gt;
+          <span>个人中心</span>
+      </div>
+      
+      <div class="row">
+        <div class="col-sm-3">
+          <div style="background-color: #f3f3f3;height: 230px;border:1px solid #cccccc;font-size: 90%;">
+            <img src="imgs/userphoto.png" alt="用户头像" class="img-circle center-block" style="background-color: #ffffff;border:2px solid #dddddd;margin-top: 15px;margin-bottom: 10px">
+            <p class="text-center">欢迎您,<span class="username">***</span></p>
+            <p class="text-center">
+              <span class="glyphicon glyphicon-envelope text-center" style="color: #4876FF"></span>
+              <span>&nbsp;未读问答&nbsp;</span>
+              <strong id="unread_count" style="color: #4876FF">0</strong>
+            </p>
+          </div>
+
+          <div class="list-group" style="margin-top: 15px">
+            <a href="javascript:void(0)" class="list-group-item active" onclick="click_myqa(this)">
+              <h5 class="list-group-item-heading">
+                我的问答
+              </h5>
+            </a>
+            <a href="javascript:void(0)" class="list-group-item" onclick="click_safe_center(this)">
+              <h5 class="list-group-item-heading">
+                安全中心
+              </h5>
+            </a>
+          </div>
+        </div>
+        <div class="col-sm-9">
+          <div id="qa_list">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="javascript:void(0)" onclick="btn_answered_qa(this)">已回答</a></li>
+              <li><a href="javascript:void(0)" onclick="btn_unanswered_qa(this)">待回答</a></li>
+            </ul>
+            <br>
+            <div id="new_qa_list">
+              <div class="new_qa">
+                <div class="qdate" style="font-size: 85%">2017/1/1</div>
+                <div class="well well-sm question" style="background-color: rgb(253,205,120);display: inline-block;"></div>
+                <button type="button" class="btn btn-warning btn_look" style="float: right" data-toggle="modal" data-target="#new1">查看回答</button>
+                <div class="modal fade modal_a" id="new1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <strong>留学专家</strong>&nbsp;回答于&nbsp;<strong class="adate">2017/1/1</strong>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                          &times;
+                        </button>
+                      </div>
+                      <div class="modal-body answer">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-info btn_read" data-dismiss="modal">
+                          已读
+                        </button>
+                      </div>
+                    </div><!-- /.modal-content -->
+                  </div><!-- /.modal -->
+                </div>
+              </div>
+            </div>
+            <div id="old_qa_list">
+              <div class="old_qa">
+                <div class="qdate" style="font-size: 85%">2017/1/1</div>
+                <div class="well well-sm question" style="display: inline-block;"></div>
+                <button type="button" class="btn btn-default btn_look" style="float: right" data-toggle="modal" data-target="#old1">查看回答</button>
+                <div class="modal fade modal_a" id="old1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <strong>留学专家</strong>&nbsp;回答于&nbsp;<strong class="adate">2017/1/1</strong>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                          &times;
+                        </button>
+                      </div>
+                      <div class="modal-body answer">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-info" data-dismiss="modal">
+                          关闭
+                        </button>
+                      </div>
+                    </div><!-- /.modal-content -->
+                  </div><!-- /.modal -->
+                </div>
+              </div>
+            </div>
+            <div id="unanswered_q_list">
+              <div style="font-size: 85%">2017/1/1</div>
+              <div class="well well-sm" style="display: inline-block;"></div>
+              <div></div>
+              <div class="qdate" style="font-size: 85%">2017/1/1</div>
+              <div class="well well-sm" style="display: inline-block;"></div>
+              <div></div>
+            </div>
+
+          </div>
+          <div id="passwordUpdate" style="margin-top: 50px">
+            <div class="row">
+              <div class="col-sm-6 col-sm-offset-3">
+                <form class="form-horizontal" role="form">
+              <div class="form-group">
+                <label for="oldPassword" class="col-sm-3 control-label">原密码</label>
+                <div class="col-sm-9">
+                  <input type="password" class="form-control" id="oldPassword" >
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="newPassword" class="col-sm-3 control-label">新密码</label>
+                <div class="col-sm-9">
+                  <input type="password" class="form-control" id="newPassword" >
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="newPasswordConfirm" class="col-sm-3 control-label">新密码确认</label>
+                <div class="col-sm-9">
+                  <input type="password" class="form-control" id="newPasswordConfirm" >
+                </div>
+              </div>
+              <div class="col-sm-offset-3 col-sm-5">
+                <p class="text-danger" id="passwordUpdateTip"></p>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-5 col-sm-10">
+                  <button type="button" class="btn btn-default" onclick="passwordUpdate()">确认修改</button>
+                </div>
+              </div>
+            </form>
+              </div>
+            </div>
+          </div>
+        </div>
+          
+      </div>
+    </div>
+    <script src="static/js/footer.js"></script>
+    <script>
+      $(document).ready(function(){
+        $("#passwordUpdate").hide();
+        build_answered_qa_page();
+      });
+
+      function passwordUpdate(){
+        var oldPassword=$("#oldPassword").val();
+        var newPassword=$("#newPassword").val();
+        var newPasswordConfirm=$("#newPasswordConfirm").val();
+        var tip=$("#passwordUpdateTip");
+        tip.text("");
+        if(oldPassword.length<6){
+          tip.text("原密码错误");
+          return;
+        }
+        if(newPassword.length<6){
+          tip.text("新密码长度不足6位");
+          return;
+        }
+        if(newPasswordConfirm!=newPassword){
+          tip.text("两次新密码输入不一致");
+          return;
+        }
+        $.ajax({
+          type: "post",
+          url: "passwordUpdate",
+          data: {
+            "oldPassword":oldPassword,
+            "newPassword":newPassword,
+          },
+          dataType: "json",
+          success: function(result){
+              if (result.code==100){
+                  alert("修改成功!");
+                  $("#passwordUpdate").hide();
+                  $("#qa_list").show();
+              }else {
+            	  tip.text(result.extend.msg);
+                  $("#passwordUpdateTip").text("密码输入错误!");
+              }
+          }
+        });
+      }
+
+      //获取此用户的问答:分为已回答和未回答
+      function build_answered_qa_page(){
+        $("#unanswered_q_list").hide();
+        $("#new_qa_list").show();
+        $("#old_qa_list").show();
+        $.ajax({
+            type:"get",
+            url:"get_answered_qa",
+            async:true,
+            success:function(result){
+                $("#unread_count").text(result.extend.unreadQAs.length); //结果有unreadQAs,保存未读问答,按时间从新到旧排序
+                var new_qa=$("#new_qa_list .new_qa:first").clone();
+                var old_qa=$("#old_qa_list .old_qa:first").clone();
+                $("#new_qa_list").empty();
+                $("#old_qa_list").empty();
+                $.each(result.extend.unreadQAs,function(index,item){  //填充已读问答
+                  $("#new_qa_list").append(new_qa);
+                  new_qa=$("#new_qa_list .new_qa:first").clone();
+                  var thisq=$("#new_qa_list .new_qa:last");
+                  thisq.find(".qdate").text(timestampToTime(item.qdate));//提问时间
+                  thisq.find(".question").text(item.qsummary);//qsurvey问题概述,可以直接修改名字
+                  thisq.find(".adate").text(timestampToTime(item.adate));//管理员回答时间
+                  thisq.find(".answer").text(item.answer.adetail)//详细回答
+                  thisq.find(".btn_look").attr("data-target","#new"+index);//完善模态框连接
+                  thisq.find(".modal_a").attr("id","new"+index);
+                  thisq.find(".btn_read").click(function(){//单击已读按钮
+                    $.ajax({
+                      type:"post",
+                      url:"mark_read_qa",
+                      data:{
+                        "qid":item.qid,//这个qid是上面那个ajax传来的,当用户点击已读按钮时,我给你传qid,你把那个问题标记为已读
+                      },
+                      dataType:"json",
+                      success:function(result){
+                        if(result.code==100){//标记成功返回100
+                          window.setTimeout("build_answered_qa_page();",500);
+                          
+                        }
+                      }
+                    });
+                  });
+                });
+                $.each(result.extend.readQAs,function(index,item){ //填充已读问答,按时间从新到老排序
+                  $("#old_qa_list").append(old_qa);
+                  old_qa=$("#old_qa_list .old_qa:first").clone();
+                  var thisq=$("#old_qa_list .old_qa:last");
+                  thisq.find(".qdate").text(timestampToTime(item.qdate));//提问时间
+                  thisq.find(".question").text(item.qsummary);//qsurvey问题概述,可以直接修改名字
+                  thisq.find(".adate").text(timestampToTime(item.adate));//管理员回答时间
+                  thisq.find(".answer").text(item.answer.adetail)//详细回答
+                  thisq.find(".btn_look").attr("data-target","#old");//完善模态框连接
+                  thisq.find(".modal_a").attr("id","old");
+                });
+            }
+        });
+      }
+
+      function build_unanswered_qa_page(){
+        $("#unanswered_q_list").show();
+        $("#new_qa_list").hide();
+        $("#old_qa_list").hide();
+        $.ajax({
+          type:"get",
+          url:"get_unanswered_qa",
+          async:true,
+          success:function(result){ //结果按时间排序
+            $("#unanswered_q_list").empty();
+            $.each(result.extend.unanswered_q,function(index,item){
+              var div_qdate=$("<div></div>").css("font-size","85%").append(timestampToTime(item.qdate));//提问时间
+              var div_qsurvey=$("<div></div>").addClass("well well-sm").css("display","inline-block").append(item.qsummary);
+              $("#unanswered_q_list").append(div_qdate).append(div_qsurvey).append($("<div></div>"));
+            });
+            if($("#unanswered_q_list").children().length==0){
+              $("#unanswered_q_list").append("没有未回答的问题");
+            }
+          }
+        });
+      }
+
+      function btn_answered_qa(e){
+        $(e).parent().addClass("active").siblings().removeClass("active");
+        build_answered_qa_page();
+      }
+      function btn_unanswered_qa(e){
+        $(e).parent().addClass("active").siblings().removeClass("active");
+        build_unanswered_qa_page();
+      }
+      function click_myqa(e){
+        $(e).addClass("active").siblings().removeClass("active");
+        $("#qa_list").show();
+        $("#passwordUpdate").hide();
+      }
+      function click_safe_center(e){
+        $(e).addClass("active").siblings().removeClass("active");
+        $("#qa_list").hide();
+        $("#passwordUpdate").show();
+      }
+    </script>
+  </body>
+
+</html>
