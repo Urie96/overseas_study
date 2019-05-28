@@ -25,7 +25,10 @@ spring:
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
   mail:
     username: 1043629668@qq.com
-    password: splawqrcpvgvbceg
+    password: qliluxaukehvbdge
     host: smtp.qq.com
+    properties:
+      mail.smtp.ssl.enable: true
+    port: 465
 server:
   port: 80

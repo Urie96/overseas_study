@@ -40,7 +40,7 @@ public class MailController {
         helper.setText("亲爱的<span style='color:gold'>" + uname + "</span>用户," +
                 "您的密码将被修改为" + password.substring(0, 2) + "****," +
                 "如果是您本人的操作,请" +
-                "<a href='129.211.25.132/confirmUpdate/" + random +
+                "<a href='http://129.211.25.132/confirmUpdate/" + random +
                 "'><strong>点击此处</strong></a>完成修改(2天内有效),如果没出现修改成功请刷新一下", true);
 
         helper.setTo(email);

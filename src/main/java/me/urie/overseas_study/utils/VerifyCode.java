@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 public class VerifyCode {
 
     public static String drawImg(ByteArrayOutputStream output) {
+
         String code = "";
         for (int i = 0; i < 4; i++) {
             code += randomChar();
